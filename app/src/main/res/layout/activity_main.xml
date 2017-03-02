@@ -27,8 +27,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/chore_tracker_button"
-                android:text="Track Communal Chores"
+                android:id="@+id/grocery_tracker_button"
+                android:text="Track Groceries"
                 android:layout_below="@id/money_manager_button"/>
         </RelativeLayout>
     </ScrollView>
