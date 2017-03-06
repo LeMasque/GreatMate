@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="Add Grocery Item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gTitle"
+        android:gravity="center"
+        android:ems="15"
+        android:textSize="30sp"
+        android:layout_margin="50px"
+        android:textAllCaps="true"
+        android:fontFamily="sans-serif" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:inputType="textPersonName"
+        android:text="Grocery Item Name"
+        android:ems="10"
+        android:layout_margin="20px"
+        android:id="@+id/gName" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:inputType="number"
+        android:ems="10"
+        android:layout_margin="20px"
+        android:id="@+id/gAmt"
+        android:text="Item Amount" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:inputType="textPersonName"
+        android:text="Item Description"
+        android:ems="10"
+        android:layout_margin="20px"
+        android:id="@+id/gDesc" />
+
+    <Button
+        android:text="Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/pBtn"
+        android:layout_margin="20px"/>
+
+</LinearLayout>
