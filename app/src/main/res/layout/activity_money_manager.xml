@@ -39,5 +39,6 @@
         android:layout_height="0dip"
         android:layout_weight="0.2"
         android:text="Add Transaction"
-        android:layout_below="@+id/scroll"/>
+        android:layout_below="@+id/scroll"
+        android:onClick="addMoneyInput"/>
 </LinearLayout>

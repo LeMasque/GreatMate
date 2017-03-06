@@ -28,7 +28,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.washington.mchs.greatmate.MainActivity" />
         </activity>
-        <activity android:name=".MoneyManager"></activity>
+        <activity android:name=".MoneyManager" />
+        <activity android:name=".GroceryManager" />
+        <activity android:name=".GroceryInputActivity" />
+        <activity android:name=".MoneyInputActivity"></activity>
     </application>
 
 </manifest>

@@ -5,16 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class MoneyManager extends AppCompatActivity {
+public class GroceryManager extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_money_manager);
+        setContentView(R.layout.activity_grocery_manager);
     }
 
-    public void addMoneyInput(View view) {
-        Intent intent = new Intent(MoneyManager.this, MoneyInputActivity.class);
+    public void addGroceryItem(View view) {
+        Intent intent = new Intent(GroceryManager.this, GroceryInputActivity.class);
         startActivity(intent);
     }
 
