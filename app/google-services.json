@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "106950400143",
+    "firebase_url": "https://greatmate-9c031.firebaseio.com",
+    "project_id": "greatmate-9c031",
+    "storage_bucket": "greatmate-9c031.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106950400143:android:66df0f485e016a00",
+        "android_client_info": {
+          "package_name": "edu.washington.mchs.greatmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106950400143-752l4ltvim6tfagh3o5mg6dceq7p6a3o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.washington.mchs.greatmate",
+            "certificate_hash": "34810e54427d4e8a3e1226be7db72e448e4b4299"
+          }
+        },
+        {
+          "client_id": "106950400143-49t8eq4iiki8hm142hvl5vavnlpccl56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA8H6F6BU8-hSU4onZOvWg2tjg459D30Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106950400143-49t8eq4iiki8hm142hvl5vavnlpccl56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
