@@ -20,18 +20,41 @@
         android:textSize="25sp"
         android:padding="10px"/>
 
-    <ScrollView
-        android:id="@+id/scroll"
+    <TableLayout
+        android:id="@+id/tableHeader"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0"
         android:background="@drawable/black_border"
         android:fillViewport="true">
-        
+
+        <TableRow
+            android:padding="10dp"
+            android:background="#262626"
+            android:orientation="horizontal">
+            <TextView android:text="Transaction"
+                android:gravity="left"
+                android:textColor="#eaeaea"
+                android:layout_width="0dip"
+                android:layout_weight="1"/>
+            <TextView android:text="User"
+                android:gravity="center"
+                android:textColor="#eaeaea"
+                android:layout_width="0dip"
+                android:layout_weight="1"/>
+            <TextView android:text="Amount"
+                android:gravity="right"
+                android:textColor="#eaeaea"
+                android:layout_width="0dip"
+                android:layout_weight="1"/>
+        </TableRow>
+
+        <ScrollView android:layout_height="match_parent">
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"></TableLayout>
-    </ScrollView>
+        </ScrollView>
+    </TableLayout>
 
     <Button
         android:padding="10px"
