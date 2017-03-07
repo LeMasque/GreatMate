@@ -51,7 +51,7 @@ public class GroceryInputActivity extends AppCompatActivity {
                 gItem.setItemAmount(amount);
 
                 //Storing values to firebase
-                mDatabase.child("Grocery Item").setValue(gItem);
+                mDatabase.child("Grocery Item").push().setValue(gItem);
 
                 Intent intent = new Intent(GroceryInputActivity.this, GroceryManager.class);
                 startActivity(intent);

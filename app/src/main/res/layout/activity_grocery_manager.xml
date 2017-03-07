@@ -1,58 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="edu.washington.mchs.greatmate.GroceryManager">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="0.15"
-        android:text="Grocery Manager"
-        android:gravity="center"
-        android:textSize="25sp"
-        android:padding="10px"/>
-
-    <ScrollView
+    <TabHost
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"
-        android:background="@drawable/black_border"
-        android:fillViewport="true">
+        android:id="@+id/tabHost"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
-            android:id="@+id/checkboxes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"></TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Grocery"
+                    android:tag="gManager"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Money"
+                    android:tag="mManager"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Logout"
+                    android:tag="logout"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Settings"
+                    android:tag="settings"
+                    android:orientation="vertical"></LinearLayout>
+            </FrameLayout>
         </LinearLayout>
-    </ScrollView>
+    </TabHost>
+
+    <RelativeLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabHost">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Grocery Manager"
+        android:padding="10px"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:id="@+id/grocerymanager"/>
+
+    <TableLayout
+        android:id="@+id/tableHeader"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1.0"
+        android:background="@drawable/black_border"
+        android:fillViewport="true"
+        android:layout_below="@+id/grocerymanager"
+        android:layout_above="@+id/buttons">
+
+        <TableRow
+            android:padding="10dp"
+            android:background="#262626"
+            android:orientation="horizontal">
+            <TextView android:text="Grocery Item"
+                android:gravity="left"
+                android:textColor="#eaeaea"
+                android:layout_width="0dip"
+                android:layout_weight="1"/>
+            <TextView android:text="Quantity"
+                android:gravity="center"
+                android:textColor="#eaeaea"
+                android:layout_width="0dip"
+                android:layout_weight="1"/>
+            <TextView android:text="Grocery Desc"
+                android:gravity="right"
+                android:textColor="#eaeaea"
+                android:layout_width="0dip"
+                android:layout_weight="1"/>
+        </TableRow>
+
+        <ScrollView android:layout_height="match_parent">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></TableLayout>
+        </ScrollView>
+    </TableLayout>
 
     <LinearLayout
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
 
         <Button
             android:text="Remove Selected"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/button2"
-            android:layout_weight="0.1"/>
+            android:layout_weight="0.1"
+            android:layout_alignParentBottom="true"/>
 
         <Button
             android:text="Add Items"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.1"
-            android:onClick="addGroceryItem"/>
+            android:onClick="addGroceryItem"
+            android:layout_alignParentBottom="true"/>
 
     </LinearLayout>
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

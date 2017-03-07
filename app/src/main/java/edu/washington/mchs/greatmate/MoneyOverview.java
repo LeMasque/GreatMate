@@ -1,30 +1,39 @@
 package edu.washington.mchs.greatmate;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class GroceryManager extends AppCompatActivity {
+/**
+ * Created by Mitchell on 3/6/2017.
+ */
+
+public class MoneyOverview extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grocery_manager);
+        setContentView(R.layout.activity_money_overview);
     }
 
-    public void addGroceryItem(View view) {
-        Intent intent = new Intent(GroceryManager.this, GroceryInputActivity.class);
+    public void addMoneyInput(View view) {
+        Intent intent = new Intent(MoneyOverview.this, MoneyInputActivity.class);
         startActivity(intent);
     }
 
-    private void createSingleRow(TableLayout tl, String item, int quantity, String desc){
+    public void getuseraction(View view){
+        Intent intent = new Intent(MoneyOverview.this, MoneyManager.class);
+        startActivity(intent);
+    }
+
+    private void createSingleRow(TableLayout tl, String user, String total, double balance){
         TableRow tr = new TableRow(this);
         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -36,28 +45,27 @@ public class GroceryManager extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         textParams.weight = 1.0f;
 
-        TextView titem = new TextView(this);
-        titem.setLayoutParams(textParams);
-        titem.setGravity(Gravity.LEFT);
-        titem.setText(item);
+        TextView tuser = new TextView(this);
+        tuser.setLayoutParams(textParams);
+        tuser.setGravity(Gravity.LEFT);
+        tuser.setText(user);
 
-        TextView tquant = new TextView(this);
-        tquant.setLayoutParams(textParams);
-        tquant.setGravity(Gravity.CENTER);
-        tquant.setText(quantity);
+        TextView ttotal = new TextView(this);
+        ttotal.setLayoutParams(textParams);
+        ttotal.setGravity(Gravity.CENTER);
+        ttotal.setText(total);
 
-        TextView tdesc = new TextView(this);
-        tdesc.setLayoutParams(textParams);
-        tdesc.setGravity(Gravity.RIGHT);
-        tdesc.setText(desc);
+        TextView tbal = new TextView(this);
+        tbal.setLayoutParams(textParams);
+        tbal.setGravity(Gravity.RIGHT);
+        tbal.setText(Double.toString(balance));
 
-        tr.addView(titem);
-        tr.addView(tquant);
-        tr.addView(tdesc);
+        tr.addView(tuser);
+        tr.addView(ttotal);
+        tr.addView(tbal);
 
         tl.addView(tr, new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
     }
-
 }
