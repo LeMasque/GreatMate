@@ -33,7 +33,6 @@
             android:background="#262626"
             android:orientation="horizontal">
             <TextView android:text="Transaction"
-                android:gravity="left"
                 android:textColor="#eaeaea"
                 android:layout_width="0dip"
                 android:layout_weight="1"/>
@@ -52,7 +51,8 @@
         <ScrollView android:layout_height="match_parent">
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></TableLayout>
+            android:layout_height="match_parent"
+            android:id="@+id/dataTable"></TableLayout>
         </ScrollView>
     </TableLayout>
 

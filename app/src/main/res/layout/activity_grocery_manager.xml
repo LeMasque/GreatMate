@@ -17,21 +17,41 @@
         android:textSize="25sp"
         android:padding="10px"/>
 
-    <ScrollView
+    <TableLayout
+        android:id="@+id/tableHeader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:layout_weight="1.0"
         android:background="@drawable/black_border"
         android:fillViewport="true">
 
-        <LinearLayout
-            android:id="@+id/checkboxes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <TableRow
+            android:padding="10dp"
+            android:background="#262626"
+            android:orientation="horizontal">
+            <TextView android:text="Grocery Item"
+                android:gravity="left"
+                android:textColor="#eaeaea"
+                android:layout_width="0dip"
+                android:layout_weight="1"/>
+            <TextView android:text="Quantity"
+                android:gravity="center"
+                android:textColor="#eaeaea"
+                android:layout_width="0dip"
+                android:layout_weight="1"/>
+            <TextView android:text="Grocery Desc"
+                android:gravity="right"
+                android:textColor="#eaeaea"
+                android:layout_width="0dip"
+                android:layout_weight="1"/>
+        </TableRow>
 
-        </LinearLayout>
-    </ScrollView>
+        <ScrollView android:layout_height="match_parent">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></TableLayout>
+        </ScrollView>
+    </TableLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
