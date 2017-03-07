@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_money_manager"
     android:layout_width="match_parent"
@@ -10,58 +10,122 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="edu.washington.mchs.greatmate.MoneyManager">
-
-    <TextView
+        
+    <TabHost
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="0.15"
-        android:text="Transaction History"
-        android:gravity="center"
-        android:textSize="25sp"
-        android:padding="10px"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/tabHost"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
 
-    <TableLayout
-        android:id="@+id/tableHeader"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1.0"
-        android:background="@drawable/black_border"
-        android:fillViewport="true">
-
-        <TableRow
-            android:padding="10dp"
-            android:background="#262626"
-            android:orientation="horizontal">
-            <TextView android:text="Transaction"
-                android:textColor="#eaeaea"
-                android:layout_width="0dip"
-                android:layout_weight="1"/>
-            <TextView android:text="User"
-                android:gravity="center"
-                android:textColor="#eaeaea"
-                android:layout_width="0dip"
-                android:layout_weight="1"/>
-            <TextView android:text="Amount"
-                android:gravity="right"
-                android:textColor="#eaeaea"
-                android:layout_width="0dip"
-                android:layout_weight="1"/>
-        </TableRow>
-
-        <ScrollView android:layout_height="match_parent">
-        <TableLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/dataTable"></TableLayout>
-        </ScrollView>
-    </TableLayout>
+            android:orientation="vertical">
 
-    <Button
-        android:padding="10px"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="0.2"
-        android:text="Add Transaction"
-        android:layout_below="@+id/scroll"
-        android:onClick="addMoneyInput"/>
-</LinearLayout>
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"></TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Grocery"
+                    android:tag="gManager"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Money"
+                    android:tag="mManager"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Logout"
+                    android:tag="logout"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Settings"
+                    android:tag="settings"
+                    android:orientation="vertical"></LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+    <RelativeLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabHost">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Money Manager"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:id="@+id/moneymanager"
+            android:padding="10px" />
+
+        <TableLayout
+            android:id="@+id/tableHeader"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1.0"
+            android:background="@drawable/black_border"
+            android:fillViewport="true"
+            android:layout_below="@+id/moneymanager"
+            android:layout_above="@+id/button">
+
+            <TableRow
+                android:padding="10dp"
+                android:background="#262626"
+                android:orientation="horizontal">
+                <TextView android:text="Transaction"
+                    android:textColor="#eaeaea"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"/>
+                <TextView android:text="User"
+                    android:gravity="center"
+                    android:textColor="#eaeaea"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"/>
+                <TextView android:text="Amount"
+                    android:gravity="right"
+                    android:textColor="#eaeaea"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"/>
+            </TableRow>
+
+            <ScrollView android:layout_height="match_parent">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/dataTable"></TableLayout>
+            </ScrollView>
+        </TableLayout>
+        <Button
+            android:padding="10px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Transaction"
+            android:id="@+id/button"
+            android:layout_alignParentBottom="true"
+            android:onClick="addMoneyInput"/>
+    </RelativeLayout>
+
+</RelativeLayout>

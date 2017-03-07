@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -7,74 +7,142 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <TextView
+    <TabHost
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="0.15"
-        android:text="Expense Overview"
-        android:gravity="center"
-        android:textSize="25sp"
-        android:padding="10px"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/tabHost"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
 
-    <TableLayout
-        android:id="@+id/tableHeader"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1.0"
-        android:background="@drawable/black_border"
-        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TableRow
-            android:padding="10dp"
-            android:background="#262626"
-            android:orientation="horizontal">
-            <TextView android:text="User"
-                android:gravity="left"
-                android:textColor="#eaeaea"
-                android:layout_width="0dip"
-                android:layout_weight="1"/>
-            <TextView android:text="Total Spent"
-                android:gravity="center"
-                android:textColor="#eaeaea"
-                android:layout_width="0dip"
-                android:layout_weight="1"/>
-            <TextView android:text="Differential"
-                android:gravity="right"
-                android:textColor="#eaeaea"
-                android:layout_width="0dip"
-                android:layout_weight="1"/>
-        </TableRow>
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"></TabWidget>
 
-        <ScrollView android:layout_height="match_parent">
-            <TableLayout
+            <FrameLayout
+                android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></TableLayout>
-        </ScrollView>
-    </TableLayout>
+                android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="0.2"
-        android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Grocery"
+                    android:tag="gManager"
+                    android:orientation="vertical"></LinearLayout>
 
-        <Button
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Money"
+                    android:tag="mManager"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Logout"
+                    android:tag="logout"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Settings"
+                    android:tag="settings"
+                    android:orientation="vertical"></LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabHost">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.15"
+            android:text="Expense Overview"
+            android:gravity="center"
+            android:textSize="25sp"
             android:padding="10px"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Add Transaction"
-            android:layout_below="@+id/scroll"
-            android:onClick="addMoneyInput"/>
+            android:id="@+id/expenseOverview"/>
 
-        <Button
-            android:padding="10px"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Transaction Details"
-            android:onClick="getTransaction"/>
+        <TableLayout
+            android:id="@+id/tableHeader"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1.0"
+            android:layout_below="@id/expenseOverview"
+            android:layout_above="@+id/buttons"
+            android:background="@drawable/black_border"
+            android:fillViewport="true">
 
-    </LinearLayout>
+            <TableRow
+                android:padding="10dp"
+                android:background="#262626"
+                android:orientation="horizontal">
+                <TextView android:text="User"
+                    android:gravity="left"
+                    android:textColor="#eaeaea"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"/>
+                <TextView android:text="Total Spent"
+                    android:gravity="center"
+                    android:textColor="#eaeaea"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"/>
+                <TextView android:text="Differential"
+                    android:gravity="right"
+                    android:textColor="#eaeaea"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"/>
+            </TableRow>
 
-</LinearLayout>
+            <ScrollView android:layout_height="match_parent">
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></TableLayout>
+            </ScrollView>
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:id="@+id/buttons">
+
+            <Button
+                android:padding="10px"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Add Transaction"
+                android:layout_below="@+id/scroll"
+                android:onClick="addMoneyInput"/>
+
+            <Button
+                android:padding="10px"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Transaction Details"
+                android:onClick="getTransaction"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
