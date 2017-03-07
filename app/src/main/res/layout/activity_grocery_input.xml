@@ -21,10 +21,10 @@
         android:gravity="center"
         android:layout_weight="1"
         android:inputType="textPersonName"
-        android:text="Grocery Item Name"
         android:ems="10"
         android:layout_margin="20px"
-        android:id="@+id/gName" />
+        android:id="@+id/gName"
+        android:hint="Grocery Item Name" />
 
     <EditText
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
         android:ems="10"
         android:layout_margin="20px"
         android:id="@+id/gAmt"
-        android:text="Item Amount" />
+        android:hint="Item Amount" />
 
     <EditText
         android:layout_width="match_parent"
@@ -44,10 +44,10 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:inputType="textPersonName"
-        android:text="Item Description"
         android:ems="10"
         android:layout_margin="20px"
-        android:id="@+id/gDesc" />
+        android:id="@+id/gDesc"
+        android:hint="Item Description" />
 
     <Button
         android:text="Submit"
