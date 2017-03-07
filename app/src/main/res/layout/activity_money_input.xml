@@ -2,7 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:weightSum="1">
+
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+    </RelativeLayout>
 
     <TextView
         android:text="Add Payment"
@@ -19,44 +27,46 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_weight="1"
+        android:layout_weight="0.15"
         android:inputType="textPersonName"
-        android:text="Payment Name"
         android:ems="10"
+        android:gravity="center"
         android:layout_margin="20px"
-        android:id="@+id/pName" />
+        android:id="@+id/pName"
+        android:contextClickable="true"
+        android:hint="Payment Name" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
         android:inputType="number"
         android:ems="10"
+        android:gravity="center"
         android:layout_margin="20px"
         android:id="@+id/pAmt"
-        android:text="Payment Amount" />
+        android:hint="Payment Amount"
+        android:layout_weight="0.10" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:gravity="center"
+        android:layout_weight="0.55"
         android:layout_gravity="center"
         android:inputType="textPersonName"
-        android:text="Payment Description"
         android:ems="10"
+        android:gravity="center"
         android:layout_margin="20px"
-        android:id="@+id/pDesc" />
+        android:id="@+id/pDesc"
+        android:hint="Payment Description" />
 
     <Button
         android:text="Submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_margin="20px"
-        android:id="@+id/pBtn" />
+        android:id="@+id/pBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="0.10" />
 
 
 </LinearLayout>
