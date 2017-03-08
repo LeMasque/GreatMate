@@ -4,37 +4,37 @@ package edu.washington.mchs.greatmate;
  * Created by GanHome on 3/6/2017.
  */
 public class GroceryItem {
-    private String itemName;
-    private int itemAmount;
-    private String itemDescr;
+    private String groceryname;
+    private int groceryamt;
+    private String grocerydesc;
 
     public GroceryItem(String itemName, int itemAmount, String itemDescr) {
-        this.itemName = itemName;
-        this.itemAmount = itemAmount;
-        this.itemDescr = itemDescr;
+        this.groceryname = itemName;
+        this.groceryamt = itemAmount;
+        this.grocerydesc = itemDescr;
     }
 
     public void setItemName(String itemName){
-        this.itemName = itemName;
+        this.groceryname = itemName;
     }
 
     public String getItemName(){
-        return itemName;
+        return groceryname;
     }
 
     public void setItemAmount(int itemAmount){
-        this.itemAmount = itemAmount;
+        this.groceryamt = itemAmount;
     }
 
     public int getItemAmount(){
-        return itemAmount;
+        return groceryamt;
     }
 
     public void setItemDescr(String itemDescr){
-        this.itemDescr = itemDescr;
+        this.grocerydesc = itemDescr;
     }
 
     public String getItemDescr(){
-        return itemDescr;
+        return grocerydesc;
     }
 }
