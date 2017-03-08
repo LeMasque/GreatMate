@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "106950400143-7ojpt0curd5985o1fqahf2k1omj5s934.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.washington.mchs.greatmate",
+            "certificate_hash": "b362c22285bf627c6a984d01d792b8afa315292c"
+          }
+        },
+        {
           "client_id": "106950400143-752l4ltvim6tfagh3o5mg6dceq7p6a3o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -30,6 +38,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyAA8H6F6BU8-hSU4onZOvWg2tjg459D30Q"
+        },
+        {
+          "current_key": "AIzaSyApCrBXQTiCHvYduX0dIJUJNHD4IcKAd3s"
         }
       ],
       "services": {
