@@ -8,11 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Settings extends AppCompatActivity {
     private Button signOut;
@@ -45,9 +49,13 @@ public class Settings extends AppCompatActivity {
         enterHouse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String hn = houseName.getText().toString().trim();
                 FirebaseUser user = auth.getCurrentUser();
                 database.getReference("users/" + user.getUid() + "/house")
-                        .setValue(houseName.getText().toString());
+                        .setValue(hn);
+                database.getReference("houses/" + hn + "/groceries/created").setValue(1);
+                database.getReference("houses/" + hn + "/transactions/created").setValue(1);
+                database.getReference("houses/" + hn + "/users/created").setValue(1);
             }
         });
 
