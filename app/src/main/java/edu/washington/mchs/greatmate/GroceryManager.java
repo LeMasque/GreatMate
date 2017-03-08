@@ -1,8 +1,8 @@
 package edu.washington.mchs.greatmate;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -12,8 +12,6 @@ import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import static edu.washington.mchs.greatmate.R.id.tabHost;
 
 public class  GroceryManager extends AppCompatActivity {
     private TabHost tabHost;
@@ -81,7 +79,6 @@ public class  GroceryManager extends AppCompatActivity {
         tab2.setIndicator("Grocery");
         tab2.setContent(R.id.tab2);
 
-        //this tab logs person out, not sure how to do that
         tab3.setIndicator("Settings");
         tab3.setContent(R.id.tab3);
 
