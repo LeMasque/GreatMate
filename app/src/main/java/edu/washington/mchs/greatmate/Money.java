@@ -1,5 +1,7 @@
 package edu.washington.mchs.greatmate;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.Comparator;
 import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
@@ -9,10 +11,11 @@ import java.util.regex.Pattern;
  * Created by masq on 3/1/17.
  */
 
+@IgnoreExtraProperties
 public class Money implements Comparable<Money> {
 
-    private final int dollars;
-    private final byte cents;
+    public final int dollars;
+    public final int cents;
 
     public Money(double amt) {
         // TODO: make this better, need to ensure only two decimal points worth of cents.
@@ -29,7 +32,7 @@ public class Money implements Comparable<Money> {
         if (matcher.matches()) {
             try { this.dollars = Integer.parseInt(matcher.group(1), 10); }
             catch (Exception e) { throw new IllegalArgumentException("Money String is ill-formed; Could not parse dollars from String supplied"); }
-            try { this.cents = (this.dollars >= 0 ? Byte.parseByte(matcher.group(2), 10) : (byte)(-Byte.parseByte(matcher.group(2), 10))); }
+            try { this.cents = (this.dollars >= 0 ? Integer.parseInt(matcher.group(2), 10) : (-Integer.parseInt(matcher.group(2), 10))); }
             catch (Exception e) { throw new IllegalArgumentException("Money String is ill-formed; Could not parse cents from String supplied"); }
         } else {
             throw new IllegalArgumentException("Money String is ill-formed; could not detect any money-like structures within String supplied");
@@ -44,13 +47,10 @@ public class Money implements Comparable<Money> {
             dollars += cents / 100;
             cents %= 100;
         }
-        byte c;
         if (!posDollars && posCents) {
-            c = (byte)(-cents);
-        } else {
-            c = (byte)cents;
+            cents = (-cents);
         }
-        this.cents = c;
+        this.cents = cents;
         this.dollars = dollars;
     }
 
