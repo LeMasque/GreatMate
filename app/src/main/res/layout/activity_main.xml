@@ -4,7 +4,6 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30px"
     tools:context="edu.washington.mchs.greatmate.MainActivity">
 
             <!-- FIXME: for the love of god, someone please make this look better -->
@@ -82,13 +81,6 @@
                         android:tag="logout"
                         android:orientation="vertical"></LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/tab4"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Settings"
-                        android:tag="settings"
-                        android:orientation="vertical"></LinearLayout>
                 </FrameLayout>
             </LinearLayout>
         </TabHost>

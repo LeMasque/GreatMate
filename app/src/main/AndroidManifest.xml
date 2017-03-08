@@ -33,7 +33,8 @@
         <activity android:name=".MoneyManager" />
         <activity android:name=".GroceryManager" />
         <activity android:name=".GroceryInputActivity" />
-        <activity android:name=".MoneyInputActivity"></activity>
+        <activity android:name=".MoneyInputActivity" />
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>

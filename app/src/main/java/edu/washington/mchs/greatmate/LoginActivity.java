@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
@@ -30,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button go;
     private RelativeLayout rl;
     private TextView changeForm;
+    private EditText name;
+    private FirebaseDatabase database;
 
 
     @Override
@@ -43,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         verifyPassword = (EditText) findViewById(R.id.verify_password);
         go = (Button) findViewById(R.id.go);
         changeForm = (TextView) findViewById(R.id.changeForm);
+        name = (EditText) findViewById(R.id.name);
+        database = FirebaseDatabase.getInstance();
 
         changeForm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +79,13 @@ public class LoginActivity extends AppCompatActivity {
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                    database.getReference("users/" +
+                                            FirebaseAuth.getInstance().getCurrentUser().getUid() +
+                                            "/" + "name").setValue(name.getText().toString());
+                                    database.getReference("users/" +
+                                            FirebaseAuth.getInstance().getCurrentUser().getUid() +
+                                            "/" + "house").setValue("");
+
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
 
@@ -110,12 +122,14 @@ public class LoginActivity extends AppCompatActivity {
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         if(isSignUp) {
             verifyPassword.setVisibility(View.INVISIBLE);
+            name.setVisibility(View.INVISIBLE);
             lp.addRule(RelativeLayout.BELOW, password.getId());
             go.setLayoutParams(lp);
             go.setText("Login");
             changeForm.setText("Need to create an account?");
         } else {
             verifyPassword.setVisibility(View.VISIBLE);
+            name.setVisibility(View.VISIBLE);
             lp.addRule(RelativeLayout.BELOW, verifyPassword.getId());
             go.setLayoutParams(lp);
             go.setText("Sign Up");
