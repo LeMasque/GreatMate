@@ -28,6 +28,7 @@ public class MoneyManager extends AppCompatActivity {
         createTabs();
         TableLayout tl = (TableLayout)findViewById(R.id.dataTable);
         createSingleRow(tl, "Rent", "Jimmy", 100.00);
+        createSingleRow(tl, "Electricity", "Hunter", 92.80);
     }
 
     public void addMoneyInput(View view) {
