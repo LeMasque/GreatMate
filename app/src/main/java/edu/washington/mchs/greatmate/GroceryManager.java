@@ -22,6 +22,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +38,9 @@ public class  GroceryManager extends AppCompatActivity {
     private List<String> selectedRows;
     FirebaseDatabase fdb;
     TableLayout tl;
+    private FirebaseDatabase database;
+    private DatabaseReference mDatabase;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +48,9 @@ public class  GroceryManager extends AppCompatActivity {
         setContentView(R.layout.activity_grocery_manager);
         createTabs();
 
+        selectedRows = new ArrayList<String>();
         tl = (TableLayout)findViewById(R.id.groceryData);
 
-        selectedRows = new ArrayList<String>();
 
         fdb = FirebaseDatabase.getInstance();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -78,15 +89,6 @@ public class  GroceryManager extends AppCompatActivity {
 
                                 }
                             }
-
-//
-//                            Log.d("GroceryProblem", "2");
-//                            for (DataSnapshot groceryItemSnapShot : dataSnapshot.getChildren()) {
-//                                Log.d("GroceryProblem", "3");
-//                                GroceryItem gi = groceryItemSnapShot.getValue(GroceryItem.class);
-//                                Log.d("GroceryProblem", "4");
-//                                createSingleRow(tl, gi.getItemName(), gi.getItemAmount(), gi.getItemDescr(), groceryItemSnapShot.getKey());
-//                            }
                         }
 
                         @Override
@@ -104,6 +106,9 @@ public class  GroceryManager extends AppCompatActivity {
 
             }
         });
+
+
+        database = FirebaseDatabase.getInstance();
     }
 
     public void addGroceryItem(View view) {
@@ -114,6 +119,32 @@ public class  GroceryManager extends AppCompatActivity {
     // removes rows with itemId in selectRows list
     public void removeItem(View view){
         Log.i("remove", selectedRows.toString());
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        //database.getReference("users/" + user.getUid() + "/house")
+        //.setValue(houseName.getText().toString());
+
+        //get current users house
+        mDatabase.child("users/" + user.getUid() + "/house").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String houseName = (String) dataSnapshot.getValue();
+                for(String id: selectedRows){
+                    mDatabase.child("houses/" + houseName + "/groceries/" + id).setValue(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Intent intent = new Intent(GroceryManager.this, GroceryManager.class);
+        startActivity(intent);
     }
 
     private void createSingleRow(TableLayout tl, String item, int quantity, String desc, String itemId){
