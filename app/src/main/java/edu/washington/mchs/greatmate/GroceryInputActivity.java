@@ -3,6 +3,7 @@ package edu.washington.mchs.greatmate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,8 +11,11 @@ import android.widget.EditText;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class GroceryInputActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
@@ -20,6 +24,8 @@ public class GroceryInputActivity extends AppCompatActivity {
     private EditText textViewDescr;
     private Button buttonSave;
     private FirebaseAuth auth;
+    private String houseName;
+    GroceryItem gItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,7 @@ public class GroceryInputActivity extends AppCompatActivity {
         String gDescr = textViewDescr.getText().toString().trim();
 
         //Creating Person object
-        GroceryItem gItem = new GroceryItem(name, amount, gDescr);
+        gItem = new GroceryItem(name, amount, gDescr);
 
 
         auth = FirebaseAuth.getInstance();
@@ -51,8 +57,22 @@ public class GroceryInputActivity extends AppCompatActivity {
         //database.getReference("users/" + user.getUid() + "/house")
         //.setValue(houseName.getText().toString());
 
+        //get current users house
+        mDatabase.child("users/" + user.getUid() + "/house").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                houseName = (String) dataSnapshot.getValue();
+                Log.d("GroceryInputHouse", houseName);
+                mDatabase.child("houses/" + houseName + "/groceries/").push().setValue(gItem);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         //Storing values to firebase
-        mDatabase.child("houses/housename1/groceries/").push().setValue(gItem);
+
 
         Intent intent = new Intent(GroceryInputActivity.this, GroceryManager.class);
         startActivity(intent);
