@@ -14,11 +14,20 @@ import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static edu.washington.mchs.greatmate.R.id.tabHost;
 
 public class MoneyManager extends AppCompatActivity {
     private TabHost tabHost;
+    private TableLayout tl;
+    private FirebaseDatabase fdb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +35,62 @@ public class MoneyManager extends AppCompatActivity {
         setContentView(R.layout.activity_money_manager);
 
         createTabs();
-        TableLayout tl = (TableLayout)findViewById(R.id.dataTable);
-        createSingleRow(tl, "Rent", "Jimmy", 100.00);
-        createSingleRow(tl, "Electricity", "Hunter", 92.80);
+        tl = (TableLayout)findViewById(R.id.dataTable);
+
+        fdb = FirebaseDatabase.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        fdb.getReference().child("users").child(uid).child("house").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String houseid = dataSnapshot.getValue(String.class);
+                System.out.println(houseid);
+                if (houseid != null) {
+                    fdb.getReference().child("houses").child(houseid).child("transactions").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            MoneyItem gi = dataSnapshot.getValue(MoneyItem.class);
+                            System.out.println(gi.getItemName());
+
+                            for(DataSnapshot groceryItemSnapShot : dataSnapshot.getChildren()) {
+                                Log.d("GroceryItemProblem", groceryItemSnapShot.getKey());
+                                if(groceryItemSnapShot.getKey() != "created") {
+                                    String itemName = "";
+                                    String description = "";
+                                    int amount = 0;
+
+                                    for(DataSnapshot giSnap : groceryItemSnapShot.getChildren()) {
+                                        String key = giSnap.getKey();
+                                        if(key.equals("itemAmount")) {
+                                            amount = giSnap.getValue(Integer.class);
+                                        } else if(key.equals("itemDescr")) {
+                                            description = giSnap.getValue(String.class);
+                                        } else if(key.equals("itemName")) {
+                                            itemName = giSnap.getValue(String.class);
+                                        }
+                                    }
+                                    if(!itemName.equals("") && itemName != null){
+                                        createSingleRow(tl, itemName, description, amount);
+                                    }
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(MoneyManager.this, "ERROR: No house set.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void addMoneyInput(View view) {

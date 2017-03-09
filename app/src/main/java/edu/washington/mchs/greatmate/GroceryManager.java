@@ -38,9 +38,6 @@ public class  GroceryManager extends AppCompatActivity {
         createTabs();
 
         tl = (TableLayout)findViewById(R.id.groceryData);
-        createSingleRow(tl, "test", 1, "desctest", "id1");
-        createSingleRow(tl, "test2", 2, "desctest2", "id2");
-        createSingleRow(tl, "test3", 3, "desctest3", "id3");
 
         selectedRows = new ArrayList<String>();
 
@@ -57,12 +54,29 @@ public class  GroceryManager extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             GroceryItem gi = dataSnapshot.getValue(GroceryItem.class);
                             System.out.println(gi.getItemName());
-                            if(gi.getItemName() != null){
-                                createSingleRow(tl, gi.getItemName(), gi.getItemAmount(), gi.getItemDescr(), dataSnapshot.getKey());
-                            }
 
-                            for(DataSnapshot grocerItemSnapShot : dataSnapshot.getChildren()) {
-                                
+                            for(DataSnapshot groceryItemSnapShot : dataSnapshot.getChildren()) {
+                                Log.d("GroceryItemProblem", groceryItemSnapShot.getKey());
+                                if(groceryItemSnapShot.getKey() != "created") {
+                                    String itemName = "";
+                                    String description = "";
+                                    int amount = 0;
+
+                                    for(DataSnapshot giSnap : groceryItemSnapShot.getChildren()) {
+                                        String key = giSnap.getKey();
+                                        if(key.equals("itemAmount")) {
+                                            amount = giSnap.getValue(Integer.class);
+                                        } else if(key.equals("itemDescr")) {
+                                            description = giSnap.getValue(String.class);
+                                        } else if(key.equals("itemName")) {
+                                            itemName = giSnap.getValue(String.class);
+                                        }
+                                    }
+                                    if(!itemName.equals("") && itemName != null){
+                                        createSingleRow(tl, itemName, amount, description, groceryItemSnapShot.getKey());
+                                    }
+
+                                }
                             }
 
 //

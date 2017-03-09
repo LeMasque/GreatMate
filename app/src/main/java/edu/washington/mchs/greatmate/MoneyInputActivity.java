@@ -24,6 +24,9 @@ public class MoneyInputActivity extends AppCompatActivity {
     private Button buttonSave;
     private FirebaseAuth auth;
     private FirebaseDatabase database;
+    private FirebaseUser user;
+    private String name;
+    private int amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,24 +46,37 @@ public class MoneyInputActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //Getting values to store
-        String name = editTextName.getText().toString().trim();
-        int amount = Integer.parseInt(editTextAmount.getText().toString().trim());
+        name = editTextName.getText().toString().trim();
+        amount = Integer.parseInt(editTextAmount.getText().toString().trim());
         String gDescr = textViewDescr.getText().toString().trim();
+        gDescr = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //Creating Person object
         final MoneyItem mItem = new MoneyItem(name, amount, gDescr);
 
 
         auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
+        user = auth.getCurrentUser();
         //database.getReference("users/" + user.getUid() + "/house")
         //.setValue(houseName.getText().toString());
 
         mDatabase.child("users/" + user.getUid() + "/house").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String houseName = (String) dataSnapshot.getValue();
-                mDatabase.child("houses/" + houseName + "/transactions/").push().setValue(mItem);
+                final String houseName = (String) dataSnapshot.getValue();
+                mDatabase.child("users/" + user.getUid() + "/name").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String userName = (String) dataSnapshot.getValue();
+                        final MoneyItem mItem = new MoneyItem(name, amount, userName);
+                        mDatabase.child("houses/" + houseName + "/transactions/").push().setValue(mItem);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override
