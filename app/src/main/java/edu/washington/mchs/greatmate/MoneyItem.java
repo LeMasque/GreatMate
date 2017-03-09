@@ -9,6 +9,8 @@ public class MoneyItem {
     private int transamt;
     private String transdesc;
 
+    public MoneyItem() {}
+
     public MoneyItem(String itemName, int itemAmount, String itemDescr) {
         this.transname = itemName;
         this.transamt = itemAmount;

@@ -8,6 +8,8 @@ public class GroceryItem {
     private int groceryamt;
     private String grocerydesc;
 
+    public GroceryItem() {}
+
     public GroceryItem(String itemName, int itemAmount, String itemDescr) {
         this.groceryname = itemName;
         this.groceryamt = itemAmount;
