@@ -17,6 +17,7 @@ public class Money implements Comparable<Money> {
     public final int dollars;
     public final int cents;
 
+    public Money() { this.cents = 0; this.dollars = 0; }
     public Money(double amt) {
         // TODO: make this better, need to ensure only two decimal points worth of cents.
         // TODO: determine if should round...

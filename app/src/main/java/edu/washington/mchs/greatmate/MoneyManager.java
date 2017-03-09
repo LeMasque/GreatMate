@@ -42,7 +42,7 @@ public class MoneyManager extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_grocery_manager, container, false);
+        View view = inflater.inflate(R.layout.activity_money_manager, container, false);
 
         final TableLayout tl = (TableLayout) view.findViewById(R.id.dataTable);
         final FirebaseDatabase fdb = FirebaseDatabase.getInstance();
@@ -55,8 +55,10 @@ public class MoneyManager extends Fragment {
                     fdb.getReference().child("houses").child(houseid).child("transactions").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-//                            Transaction transaction = dataSnapshot.getValue(Transaction.class);
-//                            createSingleRow(tl, transaction.getAmt(), transaction.getDesc(), transaction.getUser());
+                            for (DataSnapshot transactionSnapShot : dataSnapshot.getChildren()) {
+                                Transaction t = transactionSnapShot.getValue(Transaction.class);
+                                createSingleRow(tl, t.getAmt(), t.getDescription(), t.getUser());
+                            }
                         }
 
                         @Override
@@ -74,7 +76,6 @@ public class MoneyManager extends Fragment {
 
             }
         });
-//        createSingleRow(tl, "Rent", "Jimmy", 100.00);
         return view;
     }
 

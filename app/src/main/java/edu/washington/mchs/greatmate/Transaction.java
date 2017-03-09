@@ -24,7 +24,7 @@ public class Transaction {
         return this.amt; // TODO
     }
 
-    public String getDesc() {
+    public String getDescription() {
         return this.description; // TODO
     }
 

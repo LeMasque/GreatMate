@@ -19,4 +19,16 @@ public class User implements Being {
         this.email = email;
         this.house = house;
     }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getHouse() {
+        return this.house;
+    }
 }

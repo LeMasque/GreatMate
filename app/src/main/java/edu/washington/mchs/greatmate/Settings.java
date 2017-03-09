@@ -18,7 +18,11 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,18 +67,55 @@ public class Settings extends Fragment {
         enterHouse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseUser user = auth.getCurrentUser();
-                String hn = houseName.getText().toString().trim();
+                final FirebaseUser user = auth.getCurrentUser();
+                final String hn = houseName.getText().toString().trim();
                 database.getReference("users/" + user.getUid() + "/house").setValue(hn);
-                // TODO: this will destroy a house if it exists, need to check existance before setting value
-                List<User> users = new ArrayList<User>();
-                users.add(new User(user.getDisplayName(), user.getEmail(), hn));
-                List<GroceryItem> groceries = new ArrayList<GroceryItem>();
-                groceries.add(new GroceryItem("Example", 1, "An example item"));
-                List<Transaction> transactions = new ArrayList<Transaction>();
-                transactions.add(new Transaction(new Money(12, 5), "An example transaction", users.get(0)));
-                database.getReference("houses/" + hn).setValue(new House(groceries, transactions, users));
-                // TODO: FIXME
+                final DatabaseReference houseLoc = database.getReference("houses/" + hn);
+                database.getReference().child("users").child(user.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        final String username = dataSnapshot.getValue(String.class);
+                        houseLoc.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (!dataSnapshot.exists()) { // IF THE HOUSE IS NEW, INITIALIZE WITH SOME EXAMPLE DATA
+                                    List<User> users = new ArrayList<User>();
+                                    users.add(new User(username, user.getEmail(), hn));
+                                    List<GroceryItem> groceries = new ArrayList<GroceryItem>();
+                                    groceries.add(new GroceryItem("Example", 1, "An example item"));
+                                    List<Transaction> transactions = new ArrayList<Transaction>();
+                                    transactions.add(new Transaction(new Money(12, 5), "An example transaction", users.get(0)));
+                                    houseLoc.setValue(new House(groceries, transactions, users));
+                                } else { // house already exists, simply append user to users list.
+                                    houseLoc.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            // TODO : FIXME so that i work. need to update value on the DB here...
+                                            List<User> list = (List<User>)dataSnapshot.getValue();
+                                            list.add(new User(username, user.getEmail(), hn));
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 Toast.makeText(hostActivity, "House Set to " + hn, Toast.LENGTH_SHORT).show();
             }
         });
