@@ -26,6 +26,7 @@ public class GroceryInputActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String houseName;
     GroceryItem gItem;
+    FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class GroceryInputActivity extends AppCompatActivity {
         editTextName = (EditText) findViewById(R.id.gName);
         editTextAmount = (EditText) findViewById(R.id.gAmt);
         textViewDescr = (EditText) findViewById(R.id.gDesc);
+        database = FirebaseDatabase.getInstance();
     }
 
     public void saveGroceryItem(View view) {
@@ -62,7 +64,6 @@ public class GroceryInputActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 houseName = (String) dataSnapshot.getValue();
-                Log.d("GroceryInputHouse", houseName);
                 mDatabase.child("houses/" + houseName + "/groceries/").push().setValue(gItem);
             }
 
@@ -71,8 +72,6 @@ public class GroceryInputActivity extends AppCompatActivity {
 
             }
         });
-        //Storing values to firebase
-
 
         Intent intent = new Intent(GroceryInputActivity.this, GroceryManager.class);
         startActivity(intent);
