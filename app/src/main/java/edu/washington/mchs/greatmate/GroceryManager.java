@@ -7,21 +7,33 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.CheckBox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class  GroceryManager extends AppCompatActivity {
     private TabHost tabHost;
+    private List<String> selectedRows;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_manager);
-
         createTabs();
+
+        TableLayout tl = (TableLayout)findViewById(R.id.groceryData);
+        createSingleRow(tl, "test", 1, "desctest", "id1");
+        createSingleRow(tl, "test2", 2, "desctest2", "id2");
+        createSingleRow(tl, "test3", 3, "desctest3", "id3");
+
+        selectedRows = new ArrayList<String>();
     }
 
     public void addGroceryItem(View view) {
@@ -29,12 +41,17 @@ public class  GroceryManager extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void createSingleRow(TableLayout tl, String item, int quantity, String desc){
+    // removes rows with itemId in selectRows list
+    public void removeItem(View view){
+        Log.i("remove", selectedRows.toString());
+    }
+
+    private void createSingleRow(TableLayout tl, String item, int quantity, String desc, String itemId){
         TableRow tr = new TableRow(this);
         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        rowParams.setMargins(5, 0, 5, 0);
         tr.setLayoutParams(rowParams);
-        tr.setPadding(5, 5, 5, 5);
         tr.setOrientation(LinearLayout.HORIZONTAL);
 
         TableRow.LayoutParams textParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -43,19 +60,38 @@ public class  GroceryManager extends AppCompatActivity {
 
         TextView titem = new TextView(this);
         titem.setLayoutParams(textParams);
-        titem.setGravity(Gravity.LEFT);
+        titem.setGravity(Gravity.BOTTOM | Gravity.LEFT);
         titem.setText(item);
 
         TextView tquant = new TextView(this);
         tquant.setLayoutParams(textParams);
-        tquant.setGravity(Gravity.CENTER);
-        tquant.setText(quantity);
+        tquant.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+        tquant.setText(Integer.toString(quantity));
 
         TextView tdesc = new TextView(this);
         tdesc.setLayoutParams(textParams);
         tdesc.setGravity(Gravity.RIGHT);
         tdesc.setText(desc);
 
+
+        CheckBox remove = new CheckBox(this);
+        textParams.weight = 0.2f;
+        tquant.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+        remove.setLayoutParams(textParams);
+        remove.setTag(itemId);
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String selected = (String)view.getTag();
+                if(selectedRows.contains(selected)){
+                    selectedRows.remove(selected);
+                }else{
+                    selectedRows.add(selected);
+                }
+            }
+        });
+
+        tr.addView(remove);
         tr.addView(titem);
         tr.addView(tquant);
         tr.addView(tdesc);

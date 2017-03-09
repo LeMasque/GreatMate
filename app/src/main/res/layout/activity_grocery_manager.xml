@@ -85,6 +85,9 @@
             android:padding="10dp"
             android:background="#262626"
             android:orientation="horizontal">
+            <TextView
+                android:gravity="left"
+                android:layout_weight="0.3" />
             <TextView android:text="Grocery Item"
                 android:gravity="left"
                 android:textColor="#eaeaea"
@@ -105,7 +108,9 @@
         <ScrollView android:layout_height="match_parent">
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></TableLayout>
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:id="@+id/groceryData"></TableLayout>
         </ScrollView>
     </TableLayout>
 
@@ -123,6 +128,7 @@
             android:layout_height="match_parent"
             android:id="@+id/button2"
             android:layout_weight="0.1"
+            android:onClick="removeItem"
             android:layout_alignParentBottom="true"/>
 
         <Button
