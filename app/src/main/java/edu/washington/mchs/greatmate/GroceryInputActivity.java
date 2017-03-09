@@ -10,7 +10,10 @@ import android.widget.EditText;
 
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
+<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseUser;
+=======
+>>>>>>> spencer
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +44,7 @@ public class GroceryInputActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
     }
 
+<<<<<<< HEAD
     public void saveGroceryItem(View view) {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -69,6 +73,46 @@ public class GroceryInputActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+=======
+    public void saveGroceryItem(View view){
+        //Click Listener for button
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Creating firebase object
+                mDatabase = FirebaseDatabase.getInstance().getReference();
+                final FirebaseDatabase fdb = FirebaseDatabase.getInstance();
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                fdb.getReference().child("users").child(uid).child("house").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String houseid = dataSnapshot.getValue(String.class);
+                        //Getting values to store
+                        String name = editTextName.getText().toString().trim();
+                        int amount = Integer.parseInt(editTextAmount.getText().toString().trim());
+                        String gDescr = textViewDescr.getText().toString().trim();
+
+                        //Creating Person object
+                        GroceryItem gItem = new GroceryItem(name, amount, gDescr);
+
+                        //Adding values
+//                gItem.setItemName(name);
+//                gItem.setItemAmount(amount);
+
+                        //Storing values to firebase
+                        mDatabase.child("houses").child(houseid).child("groceries").push().setValue(gItem);
+
+                        Intent intent = new Intent(GroceryInputActivity.this, GroceryManager.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+>>>>>>> spencer
 
             }
         });

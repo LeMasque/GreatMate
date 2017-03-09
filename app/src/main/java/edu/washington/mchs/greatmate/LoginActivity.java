@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
@@ -34,11 +35,12 @@ public class LoginActivity extends AppCompatActivity {
     private EditText name;
     private FirebaseDatabase database;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+//        Log.i("SPENCER", "Local class: " + this.getLocalClassName() + "\r\nClass: " + this.getClass());
 
         mAuth = FirebaseAuth.getInstance();
         email = (EditText) findViewById(R.id.email);
@@ -69,52 +71,65 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        go.setOnClickListener(new View.OnClickListener() {
+        go.setOnClickListener(new Submit());
+    }
+
+    private class Submit implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            final String pw = password.getText().toString().trim();
+            final String vpw = verifyPassword.getText().toString().trim();
+            final String em = email.getText().toString().trim();
+            final String un = name.getText().toString().trim();
+            final boolean su = isSignUp;
+            if (pw.length() > 0 && un.length() > 0) {
+                if (su) {
+                    if (em.length() > 0 && pw.equals(vpw)) {
+                        login(em, pw, un, su);
+                    } else {
+                        Toast.makeText(LoginActivity.this,
+                                "ERROR: Empty email or password fields do not match.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    login(em, pw, un, su);
+                }
+            } else {
+                Toast.makeText(LoginActivity.this,
+                        "ERROR: Empty username or password fields are not allowed.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void login(final String email, final String password, final String username, final boolean signUp) {
+        OnCompleteListener ocl = new OnCompleteListener<AuthResult>() {
             @Override
-            public void onClick(View v) {
-                if(password.getText().toString().equals(verifyPassword.getText().toString()) &&
-                        email.getText().toString().length() > 0 && isSignUp) {
-                    mAuth.createUserWithEmailAndPassword(email.getText().toString(),
-                            password.getText().toString())
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    database.getReference("users/" +
-                                            FirebaseAuth.getInstance().getCurrentUser().getUid() +
-                                            "/" + "name").setValue(name.getText().toString());
-                                    database.getReference("users/" +
-                                            FirebaseAuth.getInstance().getCurrentUser().getUid() +
-                                            "/" + "house").setValue("");
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    if (signUp) {
+                        DatabaseReference dr = database.getReference();
+                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        dr.child("users").child(uid).child("name").setValue(username);
+                        dr.child("users").child(uid).child("house").setValue(null);
+                    }
 
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-
-                                    if(!task.isSuccessful()) {
-                                        Toast.makeText(LoginActivity.this,
-                                                "user creation failed: " + task.getException(),
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                } else if(!isSignUp) {
-                    mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-
-                                    if(!task.isSuccessful()) {
-                                        Log.d("Login", "sign in not successful: " + task.getException());
-                                        Toast.makeText(LoginActivity.this,
-                                                "sign in failed: " + task.getException(),
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(LoginActivity.this,
+                            "user creation failed: " + task.getException(),
+                            Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        };
+        Task<AuthResult> t = null;
+        if (signUp) {
+            t = mAuth.createUserWithEmailAndPassword(email, password);
+        } else {
+            t = mAuth.signInWithEmailAndPassword(email, password);
+        }
+        t.addOnCompleteListener(LoginActivity.this, ocl);
     }
 
     public void changeForm() {

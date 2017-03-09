@@ -1,13 +1,14 @@
 package edu.washington.mchs.greatmate;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TabHost;
@@ -21,23 +22,22 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     private TabHost tabHost;
-
+    public static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         if(user != null) {
-            Log.d("MainUser", user.getUid());
+            Log.d(TAG, user.getUid());
         } else {
+            Log.d(TAG, "user not found");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-            Log.d("MainUser", "user not found");
         }
 
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -49,12 +49,9 @@ public class MainActivity extends AppCompatActivity {
                     // launch login activity
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
-                } else {
                 }
             }
         };
-
-        Button toManagerViewButton = (Button) findViewById(R.id.money_manager_button);
 
         tabHost = (TabHost)findViewById(R.id.tabHost);
         tabHost.setup();
@@ -69,10 +66,8 @@ public class MainActivity extends AppCompatActivity {
         tab2.setIndicator("Grocery");
         tab2.setContent(R.id.tab2);
 
-        //this tab logs person out, not sure how to do that
         tab3.setIndicator("Settings");
         tab3.setContent(R.id.tab3);
-
 
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
@@ -85,26 +80,35 @@ public class MainActivity extends AppCompatActivity {
 
                 int currentTab = tabHost.getCurrentTab();
                 Log.d("tabManager", "" + currentTab);
-                if(currentTab == 0) {
-                    startActivity(new Intent(MainActivity.this, MoneyManager.class));
-                } else if(currentTab == 1) {
-                    startActivity(new Intent(MainActivity.this, GroceryManager.class));
-                } else if(currentTab == 2) {
-                    startActivity(new Intent(MainActivity.this, Settings.class));
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                switch(currentTab) {
+                    case 0:
+                        ft.replace(R.id.placeholder, new MoneyManager());
+                        break;
+                    case 1:
+                        ft.replace(R.id.placeholder, new GroceryManager());
+                        break;
+                    case 2:
+                        ft.replace(R.id.placeholder, new Settings());
+                        break;
+                    default:
+                        Log.wtf(TAG, "Unknown tab pressed");
+                        break;
                 }
+                ft.commit();
             }
         });
 
 
     }
 
-    public void moneyManager(View view) {
-        Intent intent = new Intent(MainActivity.this, MoneyManager.class);
-        startActivity(intent);
-    }
-
-    public void groceryManager(View view) {
-        Intent intent = new Intent(MainActivity.this, GroceryManager.class);
-        startActivity(intent);
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
