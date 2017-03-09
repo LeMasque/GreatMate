@@ -15,6 +15,14 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.CheckBox;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,18 +30,24 @@ public class  GroceryManager extends AppCompatActivity {
     private TabHost tabHost;
     private List<String> selectedRows;
 
+    private TableLayout tl;
+    private FirebaseDatabase database;
+    private DatabaseReference mDatabase;
+    private FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_manager);
         createTabs();
 
-        TableLayout tl = (TableLayout)findViewById(R.id.groceryData);
+        tl = (TableLayout)findViewById(R.id.groceryData);
         createSingleRow(tl, "test", 1, "desctest", "id1");
         createSingleRow(tl, "test2", 2, "desctest2", "id2");
         createSingleRow(tl, "test3", 3, "desctest3", "id3");
 
         selectedRows = new ArrayList<String>();
+        database = FirebaseDatabase.getInstance();
     }
 
     public void addGroceryItem(View view) {
@@ -44,6 +58,32 @@ public class  GroceryManager extends AppCompatActivity {
     // removes rows with itemId in selectRows list
     public void removeItem(View view){
         Log.i("remove", selectedRows.toString());
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        //database.getReference("users/" + user.getUid() + "/house")
+        //.setValue(houseName.getText().toString());
+
+        //get current users house
+        mDatabase.child("users/" + user.getUid() + "/house").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String houseName = (String) dataSnapshot.getValue();
+                for(String id: selectedRows){
+                    mDatabase.child("houses/" + houseName + "/groceries/" + id).setValue(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Intent intent = new Intent(GroceryManager.this, GroceryManager.class);
+        startActivity(intent);
     }
 
     private void createSingleRow(TableLayout tl, String item, int quantity, String desc, String itemId){
